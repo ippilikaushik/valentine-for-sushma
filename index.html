@@ -1,262 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>For Sushma 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Kaushik ❤️ Sushma</title>
 <style>
 body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  margin:0;
+  overflow:hidden;
+  background:black;
+  font-family: 'Segoe UI', sans-serif;
+  color:white;
+  text-align:center;
 }
 
-/* Start Overlay */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 26px;
-  z-index: 20;
-  cursor: pointer;
-  text-align: center;
+/* Star Background */
+.stars {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url('https://www.transparenttextures.com/patterns/stardust.png');
+  animation: moveStars 60s linear infinite;
+  opacity:0;
+  transition:1.5s;
+}
+@keyframes moveStars {
+  from {background-position:0 0;}
+  to {background-position:1000px 1000px;}
 }
 
-/* Card */
-.card {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-  position: relative;
-  z-index: 2;
-  max-width: 360px;
+#container {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  transition:1s;
 }
 
-h1 { font-size: 26px; }
-
-h2 {
-  margin-top: 5px;
-  color: #ff4d6d;
-  font-weight: normal;
+h1 {
+  font-size:3em;
+  animation: glow 2s infinite alternate;
 }
 
-.buttons {
-  position: relative;
-  height: 120px;
-  margin-top: 25px;
+@keyframes glow {
+  from { text-shadow:0 0 10px pink; }
+  to { text-shadow:0 0 30px red; }
 }
 
 button {
-  font-size: 18px;
-  padding: 12px 28px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: absolute;
+  padding:15px 40px;
+  font-size:20px;
+  margin:20px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:0.3s;
 }
 
 #yes {
-  background: #ff4d6d;
-  color: white;
-  left: 20px;
-}
-
-#yes:hover {
-  transform: scale(1.6);
+  background:#ff4d6d;
+  color:white;
 }
 
 #no {
-  background: #adb5bd;
-  color: white;
-  right: 20px;
+  background:white;
+  color:black;
+  position:absolute;
 }
 
-.countdown {
-  margin-top: 20px;
-  font-size: 15px;
-  color: #555;
+#countdown {
+  position:fixed;
+  bottom:20px;
+  width:100%;
+  font-size:18px;
 }
 
-/* Full Love Screen */
-.message-full {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
-  color: white;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  font-size: 38px;
-  font-weight: bold;
-  z-index: 15;
-  text-align: center;
-  flex-direction: column;
-  padding: 20px;
+#photo {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url('us.jpg') center/cover no-repeat;
+  opacity:0;
+  transition:2s;
 }
 
-/* Floating Hearts */
-.heart {
-  position: fixed;
-  bottom: -10px;
-  font-size: 20px;
-  animation: floatUp 6s linear infinite;
-  opacity: 0.8;
-  z-index: 1;
+#letter {
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.8);
+  padding:30px;
+  border-radius:20px;
+  display:none;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-110vh); opacity: 0; }
+.confetti {
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:red;
+  animation: fall 3s linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+@keyframes shake {
+  0%,100%{transform:translate(0)}
+  25%{transform:translate(5px)}
+  75%{transform:translate(-5px)}
 }
 </style>
 </head>
 <body>
 
-<div class="overlay" id="overlay">
-  💖 Tap to open something special 💖
+<div class="stars"></div>
+<div id="photo"></div>
+
+<div id="container">
+<h1 id="title">Will you be my Valentine, Sushma? ❤️</h1>
+<button id="yes">YES 💖</button>
+<button id="no">NO 😜</button>
 </div>
 
-<!-- Background music -->
-<audio id="bg-music" loop>
-  <source src="load.mp3" type="audio/mpeg">
+<div id="countdown"></div>
+
+<div id="letter">
+<h2>Dear Sushma ❤️</h2>
+<p id="typed"></p>
+</div>
+
+<audio id="bg" loop>
+<source src="load.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Proposal song -->
-<audio id="proposal-song">
-  <source src="proposal.mp3" type="audio/mpeg">
+<audio id="proposal">
+<source src="proposal.mp3" type="audio/mpeg">
 </audio>
-
-<div class="card">
-  <h1>Will you be my Valentine, Sushma? 💘</h1>
-  <h2>— From Kaushik 💍</h2>
-
-  <div class="buttons">
-    <button id="yes">Yes 💖</button>
-    <button id="no">No 🙃</button>
-  </div>
-
-  <div class="countdown" id="countdown"></div>
-</div>
-
-<div class="message-full" id="fullMessage">
-  <div>I LOVE YOU SUSHMA 💖</div>
-  <div style="font-size:22px;margin-top:15px;">
-    Listen carefully… 🎶<br>
-    This is from my heart ❤️<br><br>
-    Forever yours,<br>Kaushik 💍
-  </div>
-</div>
 
 <script>
-const overlay = document.getElementById("overlay");
-const bgMusic = document.getElementById("bg-music");
-const proposalSong = document.getElementById("proposal-song");
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const fullMessage = document.getElementById("fullMessage");
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const bg = document.getElementById("bg");
+const proposal = document.getElementById("proposal");
+const stars = document.querySelector(".stars");
+const photo = document.getElementById("photo");
+const letter = document.getElementById("letter");
+const typed = document.getElementById("typed");
 
-/* Tap to start */
-overlay.addEventListener("click", () => {
-  bgMusic.play();
-  overlay.style.display = "none";
+document.body.addEventListener("click",()=> bg.play(), {once:true});
+
+no.addEventListener("mouseover",()=>{
+  no.style.top=Math.random()*80+"%";
+  no.style.left=Math.random()*80+"%";
 });
 
-/* No runs away */
-noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 300 - 150;
-  const y = Math.random() * 300 - 150;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+let scale=1;
+yes.addEventListener("mouseover",()=>{
+  scale+=0.1;
+  yes.style.transform=`scale(${scale})`;
 });
 
-/* YES click */
-yesBtn.addEventListener("click", () => {
-  fullMessage.style.display = "flex";
+yes.addEventListener("click",()=>{
+  document.body.classList.add("shake");
+  bg.volume=0.3;
+  setTimeout(()=>bg.pause(),2000);
+  proposal.play();
 
-  bgMusic.pause();
-  bgMusic.currentTime = 0;
+  stars.style.opacity=1;
+  photo.style.opacity=0.4;
 
-  proposalSong.play();
-  launchFireworks();
+  fireworks();
+  confettiRain();
+  typeWriter();
+
+  proposal.onended=()=>{
+    letter.style.display="block";
+  }
 });
 
-/* Floating hearts */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 20 + "px";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
-}
-setInterval(createHeart, 400);
-
-/* Fireworks */
-function launchFireworks() {
-  for (let i = 0; i < 100; i++) {
-    const spark = document.createElement("div");
-    spark.style.position = "fixed";
-    spark.style.width = "6px";
-    spark.style.height = "6px";
-    spark.style.background = "white";
-    spark.style.borderRadius = "50%";
-    spark.style.left = "50%";
-    spark.style.top = "50%";
-    spark.style.zIndex = "30";
-    document.body.appendChild(spark);
-
-    const angle = Math.random() * 2 * Math.PI;
-    const radius = Math.random() * 350;
-
-    spark.animate([
-      { transform: "translate(0,0)", opacity: 1 },
-      { transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)`, opacity: 0 }
-    ], {
-      duration: 1200,
-      easing: "ease-out"
-    });
-
-    setTimeout(() => spark.remove(), 1200);
+function fireworks(){
+  for(let i=0;i<100;i++){
+    let div=document.createElement("div");
+    div.className="confetti";
+    div.style.left=Math.random()*100+"%";
+    div.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    div.style.animationDuration=Math.random()*3+2+"s";
+    document.body.appendChild(div);
   }
 }
 
-/* Wedding Countdown with Seconds */
-const weddingDate = new Date("2026-02-25T23:04:00");
-const countdown = document.getElementById("countdown");
+function confettiRain(){
+  setInterval(fireworks,3000);
+}
 
-function updateCountdown() {
-  const now = new Date();
-  const diff = weddingDate - now;
+const message="From the moment I met you, my life changed. Thank you for choosing me. I love you forever. – Yours always, Kaushik 💍";
 
-  if (diff <= 0) {
-    countdown.innerText = "💍 We're Married! ❤️";
+let i=0;
+function typeWriter(){
+  if(i<message.length){
+    typed.innerHTML+=message.charAt(i);
+    i++;
+    setTimeout(typeWriter,50);
+  }
+}
+
+/* Countdown */
+const weddingDate=new Date("2026-02-25T23:04:00");
+const countdown=document.getElementById("countdown");
+
+function updateCountdown(){
+  const now=new Date();
+  const diff=weddingDate-now;
+  if(diff<=0){
+    countdown.innerText="💍 We're Married ❤️";
     return;
   }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-
-  countdown.innerText =
-    `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until we become Mr & Mrs 💍`;
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff/(1000*60*60))%24);
+  const m=Math.floor((diff/(1000*60))%60);
+  const s=Math.floor((diff/1000)%60);
+  countdown.innerText=`⏳ ${d}d ${h}h ${m}m ${s}s until Mr & Mrs 💍`;
 }
-
+setInterval(updateCountdown,1000);
 updateCountdown();
-setInterval(updateCountdown, 1000);
 </script>
 
 </body>
