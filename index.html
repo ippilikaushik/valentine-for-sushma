@@ -32,7 +32,7 @@ body {
   text-align: center;
 }
 
-/* Main Card */
+/* Card */
 .card {
   background: white;
   padding: 40px;
@@ -41,12 +41,10 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   position: relative;
   z-index: 2;
-  max-width: 350px;
+  max-width: 360px;
 }
 
-h1 {
-  font-size: 26px;
-}
+h1 { font-size: 26px; }
 
 h2 {
   margin-top: 5px;
@@ -92,7 +90,7 @@ button {
   color: #555;
 }
 
-/* Full screen love message */
+/* Full Love Screen */
 .message-full {
   position: fixed;
   inset: 0;
@@ -106,6 +104,7 @@ button {
   z-index: 15;
   text-align: center;
   flex-direction: column;
+  padding: 20px;
 }
 
 /* Floating Hearts */
@@ -130,8 +129,14 @@ button {
   💖 Tap to open something special 💖
 </div>
 
+<!-- Background music -->
 <audio id="bg-music" loop>
   <source src="load.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Proposal song -->
+<audio id="proposal-song">
+  <source src="proposal.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
@@ -149,33 +154,41 @@ button {
 <div class="message-full" id="fullMessage">
   <div>I LOVE YOU SUSHMA 💖</div>
   <div style="font-size:22px;margin-top:15px;">
+    Listen carefully… 🎶<br>
+    This is from my heart ❤️<br><br>
     Forever yours,<br>Kaushik 💍
   </div>
 </div>
 
 <script>
 const overlay = document.getElementById("overlay");
-const music = document.getElementById("bg-music");
+const bgMusic = document.getElementById("bg-music");
+const proposalSong = document.getElementById("proposal-song");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const fullMessage = document.getElementById("fullMessage");
 
 /* Tap to start */
 overlay.addEventListener("click", () => {
-  music.play();
+  bgMusic.play();
   overlay.style.display = "none";
 });
 
-/* No button runs away */
+/* No runs away */
 noBtn.addEventListener("mouseover", () => {
   const x = Math.random() * 300 - 150;
   const y = Math.random() * 300 - 150;
   noBtn.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-/* Yes button */
+/* YES click */
 yesBtn.addEventListener("click", () => {
   fullMessage.style.display = "flex";
+
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+
+  proposalSong.play();
   launchFireworks();
 });
 
@@ -193,7 +206,7 @@ setInterval(createHeart, 400);
 
 /* Fireworks */
 function launchFireworks() {
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 100; i++) {
     const spark = document.createElement("div");
     spark.style.position = "fixed";
     spark.style.width = "6px";
@@ -206,21 +219,21 @@ function launchFireworks() {
     document.body.appendChild(spark);
 
     const angle = Math.random() * 2 * Math.PI;
-    const radius = Math.random() * 300;
+    const radius = Math.random() * 350;
 
     spark.animate([
       { transform: "translate(0,0)", opacity: 1 },
       { transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)`, opacity: 0 }
     ], {
-      duration: 1000,
+      duration: 1200,
       easing: "ease-out"
     });
 
-    setTimeout(() => spark.remove(), 1000);
+    setTimeout(() => spark.remove(), 1200);
   }
 }
 
-/* Wedding Countdown */
+/* Wedding Countdown with Seconds */
 const weddingDate = new Date("2026-02-25T23:04:00");
 const countdown = document.getElementById("countdown");
 
@@ -229,14 +242,17 @@ function updateCountdown() {
   const diff = weddingDate - now;
 
   if (diff <= 0) {
-    countdown.innerText = "💍 We're Married!";
+    countdown.innerText = "💍 We're Married! ❤️";
     return;
   }
 
-  const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
 
-  countdown.innerText = `⏳ ${days} days & ${hours} hours until our wedding 💍`;
+  countdown.innerText =
+    `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until we become Mr & Mrs 💍`;
 }
 
 updateCountdown();
