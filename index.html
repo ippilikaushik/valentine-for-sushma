@@ -1,197 +1,267 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Kaushik ❤️ Sushma</title>
+<meta charset="UTF-8">
+<title>For Sushma 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
-  margin:0;
-  overflow:hidden;
-  font-family: 'Segoe UI', sans-serif;
-  color:white;
-  text-align:center;
-  background:black;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-/* Background Image */
-#bgImage {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url('us.jpg') center/cover no-repeat;
-  filter:brightness(0.4);
-  z-index:-2;
+/* Start Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  z-index: 20;
+  cursor: pointer;
+  text-align: center;
 }
 
-/* Sparkle Canvas */
-canvas {
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
+/* Card */
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 2;
+  max-width: 360px;
 }
 
-/* Center Content */
-#container {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
+h1 { font-size: 26px; }
+
+h2 {
+  margin-top: 5px;
+  color: #ff4d6d;
+  font-weight: normal;
 }
 
-h1 {
-  font-size:3em;
-  text-shadow:0 0 15px white;
+.buttons {
+  position: relative;
+  height: 120px;
+  margin-top: 25px;
 }
 
 button {
-  padding:15px 40px;
-  font-size:20px;
-  margin:20px;
-  border:none;
-  border-radius:30px;
-  cursor:pointer;
-  transition:0.3s;
+  font-size: 18px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
 }
 
 #yes {
-  background:#ff4d6d;
-  color:white;
+  background: #ff4d6d;
+  color: white;
+  left: 20px;
+}
+
+#yes:hover {
+  transform: scale(1.6);
 }
 
 #no {
-  background:white;
-  color:black;
-  position:absolute;
+  background: #adb5bd;
+  color: white;
+  right: 20px;
 }
 
-#countdown {
-  position:fixed;
-  bottom:20px;
-  width:100%;
-  font-size:18px;
+.countdown {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #555;
+}
+
+/* Full Love Screen WITH YOUR PHOTO */
+.message-full {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(
+      rgba(255, 77, 109, 0.85),
+      rgba(255, 143, 163, 0.85)
+    ),
+    url('us.jpg') center/cover no-repeat;
+  color: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  font-weight: bold;
+  z-index: 15;
+  text-align: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Floating Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
 }
 </style>
 </head>
 <body>
 
-<div id="bgImage"></div>
-<canvas id="sparkles"></canvas>
-
-<div id="container">
-<h1>Will you be my Valentine, Sushma? ❤️</h1>
-<button id="yes">YES 💖</button>
-<button id="no">NO 😜</button>
+<div class="overlay" id="overlay">
+  💖 Tap to open something special 💖
 </div>
 
-<div id="countdown"></div>
-
-<audio id="bgMusic" loop>
+<!-- Background music -->
+<audio id="bg-music" loop>
   <source src="load.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="proposal">
+<!-- Proposal song -->
+<audio id="proposal-song">
   <source src="proposal.mp3" type="audio/mpeg">
 </audio>
 
+<div class="card">
+  <h1>Will you be my Valentine, Sushma? 💘</h1>
+  <h2>— From Kaushik 💍</h2>
+
+  <div class="buttons">
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 🙃</button>
+  </div>
+
+  <div class="countdown" id="countdown"></div>
+</div>
+
+<div class="message-full" id="fullMessage">
+  <div>I LOVE YOU SUSHMA 💖</div>
+  <div style="font-size:22px;margin-top:15px;">
+    Listen carefully… 🎶<br>
+    This is from my heart ❤️<br><br>
+    Forever yours,<br>Kaushik 💍
+  </div>
+</div>
+
 <script>
-const yes = document.getElementById("yes");
-const no = document.getElementById("no");
-const bgMusic = document.getElementById("bgMusic");
-const proposal = document.getElementById("proposal");
+const overlay = document.getElementById("overlay");
+const bgMusic = document.getElementById("bg-music");
+const proposalSong = document.getElementById("proposal-song");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const fullMessage = document.getElementById("fullMessage");
 
-/* Start background music on first click */
-document.body.addEventListener("click",()=>{
+/* Tap to start */
+overlay.addEventListener("click", () => {
   bgMusic.play();
-},{once:true});
-
-/* No button runs away */
-no.addEventListener("mouseover",()=>{
-  no.style.top=Math.random()*80+"%";
-  no.style.left=Math.random()*80+"%";
+  overlay.style.display = "none";
 });
 
-/* Yes button grows */
-let scale=1;
-yes.addEventListener("mouseover",()=>{
-  scale+=0.1;
-  yes.style.transform=`scale(${scale})`;
+/* No runs away */
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * 300 - 150;
+  const y = Math.random() * 300 - 150;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-/* Yes clicked */
-yes.addEventListener("click",()=>{
+/* YES click */
+yesBtn.addEventListener("click", () => {
+  fullMessage.style.display = "flex";
+
   bgMusic.pause();
-  proposal.play();
-  yes.innerHTML="I KNEW IT 😍❤️";
+  bgMusic.currentTime = 0;
+
+  proposalSong.play();
+  launchFireworks();
 });
 
-/* Countdown with seconds */
-const weddingDate=new Date("2026-02-25T23:04:00");
-const countdown=document.getElementById("countdown");
+/* Floating hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 20 + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 400);
 
-function updateCountdown(){
-  const now=new Date();
-  const diff=weddingDate-now;
-  if(diff<=0){
-    countdown.innerText="💍 We're Married ❤️";
+/* Fireworks */
+function launchFireworks() {
+  for (let i = 0; i < 100; i++) {
+    const spark = document.createElement("div");
+    spark.style.position = "fixed";
+    spark.style.width = "6px";
+    spark.style.height = "6px";
+    spark.style.background = "white";
+    spark.style.borderRadius = "50%";
+    spark.style.left = "50%";
+    spark.style.top = "50%";
+    spark.style.zIndex = "30";
+    document.body.appendChild(spark);
+
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = Math.random() * 350;
+
+    spark.animate([
+      { transform: "translate(0,0)", opacity: 1 },
+      { transform: `translate(${Math.cos(angle)*radius}px, ${Math.sin(angle)*radius}px)`, opacity: 0 }
+    ], {
+      duration: 1200,
+      easing: "ease-out"
+    });
+
+    setTimeout(() => spark.remove(), 1200);
+  }
+}
+
+/* Wedding Countdown with Seconds */
+const weddingDate = new Date("2026-02-25T23:04:00");
+const countdown = document.getElementById("countdown");
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = weddingDate - now;
+
+  if (diff <= 0) {
+    countdown.innerText = "💍 We're Married! ❤️";
     return;
   }
-  const d=Math.floor(diff/(1000*60*60*24));
-  const h=Math.floor((diff/(1000*60*60))%24);
-  const m=Math.floor((diff/(1000*60))%60);
-  const s=Math.floor((diff/1000)%60);
-  countdown.innerText=`⏳ ${d}d ${h}h ${m}m ${s}s until Mr & Mrs 💍`;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdown.innerText =
+    `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until we become Mr & Mrs 💍`;
 }
-setInterval(updateCountdown,1000);
+
 updateCountdown();
-
-/* Sparkles Effect */
-const canvas=document.getElementById("sparkles");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-for(let i=0;i<120;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2,
-    d:Math.random()*1
-  });
-}
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
-  ctx.shadowBlur=10;
-  ctx.shadowColor="white";
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
-    ctx.fill();
-  }
-  update();
-}
-
-function update(){
-  for(let i=0;i<particles.length;i++){
-    let p=particles[i];
-    p.y+=p.d;
-    if(p.y>canvas.height){
-      p.y=0;
-      p.x=Math.random()*canvas.width;
-    }
-  }
-}
-
-setInterval(draw,33);
-
-window.addEventListener("resize",()=>{
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
-});
+setInterval(updateCountdown, 1000);
 </script>
 
 </body>
