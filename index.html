@@ -6,43 +6,41 @@
 body {
   margin:0;
   overflow:hidden;
-  background:black;
   font-family: 'Segoe UI', sans-serif;
   color:white;
   text-align:center;
+  background:black;
 }
 
-/* Star Background */
-.stars {
+/* Background Image */
+#bgImage {
   position:fixed;
   width:100%;
   height:100%;
-  background:url('https://www.transparenttextures.com/patterns/stardust.png');
-  animation: moveStars 60s linear infinite;
-  opacity:0;
-  transition:1.5s;
-}
-@keyframes moveStars {
-  from {background-position:0 0;}
-  to {background-position:1000px 1000px;}
+  background:url('us.jpg') center/cover no-repeat;
+  filter:brightness(0.4);
+  z-index:-2;
 }
 
+/* Sparkle Canvas */
+canvas {
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* Center Content */
 #container {
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%, -50%);
-  transition:1s;
 }
 
 h1 {
   font-size:3em;
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from { text-shadow:0 0 10px pink; }
-  to { text-shadow:0 0 30px red; }
+  text-shadow:0 0 15px white;
 }
 
 button {
@@ -72,142 +70,61 @@ button {
   width:100%;
   font-size:18px;
 }
-
-#photo {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url('us.jpg') center/cover no-repeat;
-  opacity:0;
-  transition:2s;
-}
-
-#letter {
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(0,0,0,0.8);
-  padding:30px;
-  border-radius:20px;
-  display:none;
-}
-
-.confetti {
-  position:fixed;
-  width:10px;
-  height:10px;
-  background:red;
-  animation: fall 3s linear infinite;
-}
-@keyframes fall {
-  to { transform: translateY(100vh) rotate(720deg); }
-}
-
-.shake {
-  animation: shake 0.5s;
-}
-@keyframes shake {
-  0%,100%{transform:translate(0)}
-  25%{transform:translate(5px)}
-  75%{transform:translate(-5px)}
-}
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
-<div id="photo"></div>
+<div id="bgImage"></div>
+<canvas id="sparkles"></canvas>
 
 <div id="container">
-<h1 id="title">Will you be my Valentine, Sushma? ❤️</h1>
+<h1>Will you be my Valentine, Sushma? ❤️</h1>
 <button id="yes">YES 💖</button>
 <button id="no">NO 😜</button>
 </div>
 
 <div id="countdown"></div>
 
-<div id="letter">
-<h2>Dear Sushma ❤️</h2>
-<p id="typed"></p>
-</div>
-
-<audio id="bg" loop>
-<source src="load.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+  <source src="load.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="proposal">
-<source src="proposal.mp3" type="audio/mpeg">
+  <source src="proposal.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const yes = document.getElementById("yes");
 const no = document.getElementById("no");
-const bg = document.getElementById("bg");
+const bgMusic = document.getElementById("bgMusic");
 const proposal = document.getElementById("proposal");
-const stars = document.querySelector(".stars");
-const photo = document.getElementById("photo");
-const letter = document.getElementById("letter");
-const typed = document.getElementById("typed");
 
-document.body.addEventListener("click",()=> bg.play(), {once:true});
+/* Start background music on first click */
+document.body.addEventListener("click",()=>{
+  bgMusic.play();
+},{once:true});
 
+/* No button runs away */
 no.addEventListener("mouseover",()=>{
   no.style.top=Math.random()*80+"%";
   no.style.left=Math.random()*80+"%";
 });
 
+/* Yes button grows */
 let scale=1;
 yes.addEventListener("mouseover",()=>{
   scale+=0.1;
   yes.style.transform=`scale(${scale})`;
 });
 
+/* Yes clicked */
 yes.addEventListener("click",()=>{
-  document.body.classList.add("shake");
-  bg.volume=0.3;
-  setTimeout(()=>bg.pause(),2000);
+  bgMusic.pause();
   proposal.play();
-
-  stars.style.opacity=1;
-  photo.style.opacity=0.4;
-
-  fireworks();
-  confettiRain();
-  typeWriter();
-
-  proposal.onended=()=>{
-    letter.style.display="block";
-  }
+  yes.innerHTML="I KNEW IT 😍❤️";
 });
 
-function fireworks(){
-  for(let i=0;i<100;i++){
-    let div=document.createElement("div");
-    div.className="confetti";
-    div.style.left=Math.random()*100+"%";
-    div.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    div.style.animationDuration=Math.random()*3+2+"s";
-    document.body.appendChild(div);
-  }
-}
-
-function confettiRain(){
-  setInterval(fireworks,3000);
-}
-
-const message="From the moment I met you, my life changed. Thank you for choosing me. I love you forever. – Yours always, Kaushik 💍";
-
-let i=0;
-function typeWriter(){
-  if(i<message.length){
-    typed.innerHTML+=message.charAt(i);
-    i++;
-    setTimeout(typeWriter,50);
-  }
-}
-
-/* Countdown */
+/* Countdown with seconds */
 const weddingDate=new Date("2026-02-25T23:04:00");
 const countdown=document.getElementById("countdown");
 
@@ -226,6 +143,55 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);
 updateCountdown();
+
+/* Sparkles Effect */
+const canvas=document.getElementById("sparkles");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<120;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    d:Math.random()*1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  ctx.shadowBlur=10;
+  ctx.shadowColor="white";
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+    ctx.fill();
+  }
+  update();
+}
+
+function update(){
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    p.y+=p.d;
+    if(p.y>canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
+    }
+  }
+}
+
+setInterval(draw,33);
+
+window.addEventListener("resize",()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
 </script>
 
 </body>
